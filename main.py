@@ -135,14 +135,7 @@ def comp(stEnemy, stMy, win1, win2, x_o):
     st3 = step2Computer()
     # третий шаг-получаем индекс для дальнейшей победы (есть минимум 1 ход и свобод. поля для использования комбинации)
 
-    if st1 >= 0:
-        comp_step = st1
-    elif st2 >= 0:
-        comp_step = st2
-    elif st3 >= 0:
-        comp_step = st3
-    else:
-        comp_step = st4
+    comp_step = list(filter( lambda x: x >= 0, (st1, st2, st3, st4) ))[0]
     po[comp_step] = x_o  # значению клетки поля с соответствующмим индексом присваивается  - компьютер сходил.
     yy = comp_step % 3 + 1
     xx = comp_step // 3 + 1
