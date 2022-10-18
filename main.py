@@ -168,26 +168,40 @@ def check():
     return 1
 
 
+def make_step(player_comp, whoX, win1, win2, xoxo):
+    if player_comp == 1:
+        step_func = inp
+        args = xoxo
+    else:
+        if (whoX == 0 and xoxo == 'X') or (whoX == 1 and xoxo == '0'):
+            step_func = inp
+            args = xoxo
+        elif whoX == 0 and xoxo == '0':
+            step_func = comp
+            args = (stepsInf('X'), stepsInf('0'), win1, win2, '0')
+        elif whoX == 1 and xoxo == 'X':
+            step_func = comp
+            args = (stepsInf('0'), stepsInf('X'), win1, win2, 'X')
+    step_func(*args)
+
+
 def startGame():
-    print('Добро пожаловать в крестики-нолики!')
-    sleep(0.8)
-    print('Координаты нужно вводить через пробел: сначала строка, затем столбец')
-    sleep(0.8)
-    print('1 - первая, 3 - последняя')
-    sleep(1)
+    text = [
+        'Добро пожаловать в крестики-нолики!', 'Координаты нужно вводить через пробел:',
+        'сначала строка, затем столбец', '1 - первая, 3 - последняя', '=========================']
+    for message in text:
+        print(message)
+        sleep(1)
     while True:
         player_comp = int(input('с кем играем? 1 - человек, 2 - компьютер:  '))
         if player_comp in (1, 2):
             break
         else:
             print('Ты промахнулся, воин!')
-
     pole()  # печатаем поле
     if player_comp == 2:
-        sleep(0.4)
         print('Удачи тебе, воин!')
-        sleep(0.4)
-        whoX = random.randrange(2)  # 0: X игрок, 0 комп/ 1: X комп, 0 игрок
+        whoX = random.randrange(2)  # 0: X игрок, 0 комп / 1: X комп, 0 игрок
         if whoX:
             print('Первым ходит компьютер')
         else:
@@ -197,26 +211,13 @@ def startGame():
 
     count = 1
     while fin == 1:
-        sleep(1)
-        print(f':::: шаг № {count} ::::')
+        sleep(1.5)
+        print(f'::::: шаг № {count} :::::')
         for xoxo in ('X', '0'):
-            if player_comp == 1:
-                step_func = inp
-                args = xoxo
-            else:
-                if (whoX == 0 and xoxo == 'X') or (whoX == 1 and xoxo == '0'):
-                    step_func = inp
-                    args = xoxo
-                elif whoX == 0 and xoxo == '0':
-                    step_func = comp
-                    args = (stepsInf('X'), stepsInf('0'), win1, win2, '0')
-                elif whoX == 1 and xoxo == 'X':
-                    step_func = comp
-                    args = (stepsInf('0'), stepsInf('X'), win1, win2, 'X')
-            step_func(*args)
+            make_step(player_comp, whoX, win1, win2, xoxo)
             pole()
             fin = check()  # проверка на победу
-            if fin != 1:  # если возщвращается не 1 то прерывается
+            if fin != 1:  # если возвращается не 1, то прерывается
                 break
         count += 1
 
@@ -227,4 +228,3 @@ def startGame():
 
 
 startGame()  # вызов игры
-
